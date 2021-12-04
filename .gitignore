@@ -36,4 +36,4 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 
-/assets/**
+/public/assets/uploads/**
