@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model eventi {
+  ID          Int      @id @default(autoincrement())
+  TITOLO      String   @db.VarChar(50)
+  SOTTOTITOLO String?  @db.VarChar(50)
+  ORA_INIZIO  DateTime @map("ORA INIZIO") @db.Time(0)
+  ORA_FINE    DateTime @map("ORA FINE") @db.Time(4)
+  DATA        DateTime @db.Date
+  DESCRIZIONE String?  @db.LongText
+  LINK        String?  @db.Text
+  COPERTINA   String?  @db.Text
+  active      Boolean  @default(true)
+}
+
+model menu_bar {
+  idmenu_bar       Int            @id @default(autoincrement())
+  nome_piatto      String         @db.VarChar(45)
+  menu_category_id Int?
+  prezzo           Float?         @db.Float
+  img_path         String?        @db.VarChar(45)
+  menu_category    menu_category? @relation(fields: [menu_category_id], references: [idmenu_category], onDelete: NoAction, map: "category_fk")
+
+  @@index([menu_category_id], map: "category_idx")
+}
+
+model menu_category {
+  idmenu_category Int        @id @default(autoincrement())
+  category_name   String     @db.VarChar(45)
+  menu_bar        menu_bar[]
+}
+
+model news {
+  idnews      Int     @id @default(autoincrement())
+  titolo      String? @db.VarChar(45)
+  description String? @db.LongText
+}
